@@ -227,12 +227,19 @@ function displayResults(result) {
     document.getElementById('timeValue').textContent = (result.time || 0).toFixed(2) + 's';
 
     const detectionsItems = document.getElementById('detectionsItems');
-    detectionsItems.innerHTML = (result.detections || []).map(det => `
+    detectionsItems.innerHTML = (result.detections || []).map(det => {
+        const stageKey = Object.keys(STAGE_NAMES_AR).find(key => key.toLowerCase() === det.stage.toLowerCase()) || det.stage;
+        const stageName = STAGE_NAMES_AR[stageKey] || det.stage;
+        const bgColor = STAGE_COLORS[stageKey] || '#fff';
+        return `
         <div class="detection-item">
-            <span style="color: ${STAGE_COLORS[det.stage] || '#fff'}">${STAGE_NAMES_AR[det.stage] || det.stage}</span>
+            <span style="color: #000 !important; background: ${bgColor}; padding: 4px 8px; border-radius: 4px; display: inline-block; font-weight: bold; font-size: 14px;">${stageName}</span>
             <span>${Math.round((det.confidence || 0) * 100)}%</span>
         </div>
-    `).join('');
+    `}).join('');
+
+    // Re-attach save button event listener after results are displayed
+    initSaveButton();
 }
 
 function drawDetections(detections) {
@@ -281,52 +288,56 @@ function initResultActions() {
         document.getElementById('resultsSection').style.display = 'none';
     });
 
-    document.getElementById('saveResultBtn')?.addEventListener('click', async () => {
-        const user = firebase.auth().currentUser;  // تأكد من أن Firebase Auth مُهيأ
-        if (!user) {
-            showToast('error', 'يجب تسجيل الدخول');
-            return;
-        }
+    initSaveButton();
+}
 
-        const timestamp = new Date();
-        const canvas = document.getElementById('detectionCanvas');
-        const imageData = canvas.toDataURL('image/png');
-
-        try {
-            // رفع الصورة باستخدام window.firebaseStorage (إصلاح)
-            const storageRef = window.firebaseStorage.ref();  // غيّر من firebase.storage()
-            const imageRef = storageRef.child(`analyses/${user.uid}_${timestamp.getTime()}.png`);
-            await imageRef.putString(imageData, 'data_url');
-            const imageUrl = await imageRef.getDownloadURL();
-
-            // حفظ البيانات باستخدام window.firebaseDb (إصلاح)
-            await window.firebaseDb.collection('analyses').add({  // غيّر من firebase.firestore()
-                userId: user.uid,
-                imageUrl: imageUrl,
-                result: currentResult,
-                dominant: currentResult.dominant,
-                dominantAr: currentResult.dominantAr,
-                confidence: currentResult.detections?.[0]?.confidence || 0,
-                count: currentResult.total || 0,
-                detections: currentResult.detections || [],
-                time: currentResult.time || 0,
-                createdAt: firebase.firestore.Timestamp.fromDate(timestamp)  // استخدم window.firebaseDb إذا لزم الأمر، لكن هذا يعمل
-            });
-
-            showToast('success', 'تم حفظ التحليل بنجاح');
-
-        } catch (error) {
-                console.error('خطأ في الرفع:', error);
-    if (error.code === 'storage/unauthorized') {
-        showToast('error', 'خطأ في الصلاحيات - تأكد من تسجيل الدخول');
-    } else if (error.message.includes('CORS')) {
-        showToast('error', 'خطأ CORS - شغل التطبيق على خادم محلي');
-    } else {
-        showToast('error', 'خطأ في رفع الصورة: ' + error.message);
+function initSaveButton() {
+    const saveBtn = document.getElementById('saveResultBtn');
+    if (saveBtn) {
+        // Remove existing listeners to avoid duplicates
+        saveBtn.removeEventListener('click', handleSave);
+        saveBtn.addEventListener('click', handleSave);
     }
-         
-        }
-    });
+}
+
+async function handleSave() {
+    const userId = 'test-user'; // for testing without login
+
+    const timestamp = new Date();
+    const canvas = document.getElementById('detectionCanvas');
+    const imageData = canvas.toDataURL('image/png');
+
+    try {
+        // حفظ محلياً في localStorage للاختبار
+        const analysisData = {
+            id: `local_${timestamp.getTime()}`,
+            userId: userId,
+            imageData: imageData, // حفظ الصورة كـ base64
+            result: currentResult,
+            dominant: currentResult.dominant,
+            dominantAr: currentResult.dominantAr,
+            confidence: currentResult.detections?.[0]?.confidence || 0,
+            count: currentResult.total || 0,
+            detections: currentResult.detections || [],
+            time: currentResult.time || 0,
+            createdAt: timestamp.toISOString()
+        };
+
+        console.log('Saving analysis data locally:', analysisData);
+
+        // حفظ في localStorage
+        const existingAnalyses = JSON.parse(localStorage.getItem('analyses') || '[]');
+        existingAnalyses.unshift(analysisData); // إضافة في البداية
+        localStorage.setItem('analyses', JSON.stringify(existingAnalyses));
+
+        console.log('✅ Analysis saved locally with ID:', analysisData.id);
+
+        showToast('success', 'تم حفظ التحليل بنجاح');
+
+    } catch (error) {
+        console.error('خطأ في الحفظ:', error);
+        showToast('error', 'خطأ في حفظ التحليل: ' + error.message);
+    }
 }
 
 // ================= أدوات مساعدة =================

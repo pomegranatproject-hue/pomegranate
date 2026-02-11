@@ -88,21 +88,31 @@ async function uploadImage(file) {
 
 // Fetch history
 async function getAnalysisHistory(limit = 50) {
-    const userId = getUserId();
-    if (!userId) throw new Error('يجب تسجيل الدخول لعرض السجل');
+    // For testing - load from localStorage first
+    const localAnalyses = JSON.parse(localStorage.getItem('analyses') || '[]');
+    if (localAnalyses.length > 0) {
+        return localAnalyses.slice(0, limit);
+    }
 
-    const snapshot = await window.firebaseDb.collection('analyses')
-        .where('userId', '==', userId)
-        .orderBy('createdAt', 'desc')
-        .limit(limit)
-        .get();
+    // Fallback to Firebase if no local data
+    try {
+        const userId = 'test-user';
+        const snapshot = await window.firebaseDb.collection('analyses')
+            .where('userId', '==', userId)
+            .orderBy('createdAt', 'desc')
+            .limit(limit)
+            .get();
 
-    const analyses = [];
-    snapshot.forEach(doc => {
-        analyses.push({ id: doc.id, ...doc.data() });
-    });
+        const analyses = [];
+        snapshot.forEach(doc => {
+            analyses.push({ id: doc.id, ...doc.data() });
+        });
 
-    return analyses;
+        return analyses;
+    } catch (error) {
+        console.error('Error loading from Firebase:', error);
+        return [];
+    }
 }
 
 // Delete analysis
@@ -122,20 +132,8 @@ async function deleteAnalysis(analysisId) {
 
 // Dashboard stats
 async function getDashboardStats() {
-    const userId = getUserId();
-    if (!userId) {
-        return {
-            totalAnalyses: 0,
-            matureCount: 0,
-            avgConfidence: 0,
-            totalDetections: 0,
-            stageDistribution: {}
-        };
-    }
-
-    const snapshot = await window.firebaseDb.collection('analyses')
-        .where('userId', '==', userId)
-        .get();
+    // For testing without login - get from localStorage
+    const analyses = JSON.parse(localStorage.getItem('analyses') || '[]');
 
     let totalConfidence = 0;
     let totalDetections = 0;
@@ -149,20 +147,19 @@ async function getDashboardStats() {
         'Maturity': 0
     };
 
-    snapshot.forEach(doc => {
-        const data = doc.data();
-        const result = data.result || {};
-        totalConfidence += data.confidence || 0;
-        totalDetections += data.count || result.total || 0;
+    analyses.forEach(analysis => {
+        const result = analysis.result || {};
+        totalConfidence += analysis.confidence || 0;
+        totalDetections += analysis.count || result.total || 0;
 
-        const stage = result.dominant || data.dominant;
+        const stage = result.dominant || analysis.dominant;
         if (stage === 'Maturity') matureCount++;
         if (stageDistribution.hasOwnProperty(stage)) {
             stageDistribution[stage]++;
         }
     });
 
-    const totalAnalyses = snapshot.size;
+    const totalAnalyses = analyses.length;
 
     return {
         totalAnalyses,

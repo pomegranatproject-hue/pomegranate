@@ -222,7 +222,7 @@ ul {
 
 .btn-secondary {
     background: var(--bg-input);
-    color: white;
+    color: var(--text-primary);
     border: 1px solid var(--border-color);
 }
 
@@ -280,7 +280,7 @@ ul {
     position: absolute;
     inset: 0;
     z-index: -1;
-    background-image: url('../assets/images/hero-bg.jpg');
+    background-image: url('assets/images/hero-bg.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -324,6 +324,7 @@ ul {
     font-weight: 800;
     line-height: 1.2;
     margin-bottom: 1.5rem;
+    color: white;
 }
 
 .hero-title span {
@@ -334,8 +335,8 @@ ul {
 }
 
 .hero-desc {
-    font-size: 1.2rem;
-    color: var(--text-secondary);
+    font-size: 1.4rem;
+    color: white;
     margin-bottom: 2rem;
     max-width: 550px;
 }
@@ -345,6 +346,16 @@ ul {
     flex-wrap: wrap;
     gap: 1rem;
     margin-bottom: 3rem;
+}
+
+.hero-actions .btn-outline {
+    border-color: white;
+    color: white;
+}
+
+.hero-actions .btn-outline:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: white;
 }
 
 .hero-stats {
@@ -965,6 +976,13 @@ ul {
     padding: 0.75rem;
     background: var(--bg-card);
     border-radius: var(--radius-sm);
+    color: var(--text-primary);
+}
+
+.detection-item span {
+    font-size: 14px;
+    font-weight: bold;
+    color: #000 !important;
 }
 
 .results-actions {
@@ -1080,8 +1098,8 @@ ul {
 
 .filter-group label {
     display: block;
-    font-size: 0.85rem;
-    color: var(--text-muted);
+    font-size: 1rem;
+    color: var(--text-primary);
     margin-bottom: 0.5rem;
 }
 
@@ -1092,7 +1110,7 @@ ul {
     background: var(--bg-input);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
-    color: white;
+    color: var(--text-primary);
     font-family: 'Cairo', sans-serif;
     font-size: 0.95rem;
 }
@@ -1777,6 +1795,64 @@ ul {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.25));
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.4));
     pointer-events: none;
+}
+
+/* ====================================
+   Images Gallery Section
+   ==================================== */
+.images-gallery {
+    padding: 3rem 0;
+    background: var(--bg-main);
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.gallery-item {
+    position: relative;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    transition: var(--transition);
+}
+
+.gallery-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    transition: var(--transition);
+}
+
+.gallery-item:hover img {
+    transform: scale(1.05);
+}
+
+.gallery-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    padding: 2rem 1.5rem 1.5rem;
+    color: white;
+}
+
+.gallery-overlay h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.gallery-overlay p {
+    font-size: 0.9rem;
+    opacity: 0.9;
 }
