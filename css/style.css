@@ -1,4 +1,4 @@
-/* ====================================
+o/* ====================================
    الحصاد الأحمر - Red Harvest
    Main Stylesheet
    ==================================== */
@@ -350,12 +350,14 @@ ul {
 
 .hero-actions .btn-outline {
     border-color: white;
-    color: white;
+    color: #333;
+    background: rgba(255, 255, 255, 0.9);
 }
 
 .hero-actions .btn-outline:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 1);
     border-color: white;
+    color: #333;
 }
 
 .hero-stats {
@@ -980,9 +982,14 @@ ul {
 }
 
 .detection-item span {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: bold;
     color: #000 !important;
+}
+
+.detection-item {
+    font-size: 16px;
+    color: #333 !important;
 }
 
 .results-actions {
