@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>السجل - الحصاد الأحمر</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon"><i class="fas fa-leaf"></i></div>
+                <div class="logo-text">
+                    <span class="logo-ar">الحصاد الأحمر</span>
+                </div>
+            </a>
+            <div class="nav-links" id="navLinks">
+                <a href="index.html" class="nav-link"><i class="fas fa-home"></i> الرئيسية</a>
+                <a href="analyze.html" class="nav-link"><i class="fas fa-microscope"></i> تحليل الصور</a>
+                <a href="dashboard.html" class="nav-link"><i class="fas fa-chart-line"></i> لوحة التحكم</a>
+                <a href="history.html" class="nav-link active"><i class="fas fa-history"></i> السجل</a>
+            </div>
+            <div class="nav-auth" id="navAuth"></div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn"><i class="fas fa-bars"></i></button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="history-page">
+        <div class="container">
+            <div class="page-header">
+                <h1><i class="fas fa-history"></i> سجل التحليلات</h1>
+                <p>جميع تحليلاتك السابقة</p>
+            </div>
+
+            <!-- Filters -->
+            <div class="history-filters">
+                <div class="filter-group">
+                    <label>البحث</label>
+                    <input type="text" id="searchInput" placeholder="ابحث...">
+                </div>
+                <div class="filter-group">
+                    <label>المرحلة</label>
+                    <select id="stageFilter">
+                        <option value="">جميع المراحل</option>
+                        <option value="Bud">برعم</option>
+                        <option value="Flower">زهرة</option>
+                        <option value="Early-growth">نمو مبكر</option>
+                        <option value="Mid-Growth">نمو متوسط</option>
+                        <option value="Maturity">ناضج</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>الفترة</label>
+                    <select id="dateFilter">
+                        <option value="">كل الأوقات</option>
+                        <option value="today">اليوم</option>
+                        <option value="week">هذا الأسبوع</option>
+                        <option value="month">هذا الشهر</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- History Grid -->
+            <div class="history-grid" id="historyGrid"></div>
+
+            <!-- Empty State -->
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <div class="empty-icon"><i class="fas fa-inbox"></i></div>
+                <h3>لا توجد تحليلات</h3>
+                <p>ابدأ بتحليل صورتك الأولى</p>
+                <a href="analyze.html" class="btn btn-primary">
+                    <i class="fas fa-camera"></i>
+                    تحليل صورة
+                </a>
+            </div>
+
+            <!-- Load More -->
+            <div class="load-more" id="loadMore" style="display: none;">
+                <button class="btn btn-outline" id="loadMoreBtn">
+                    <i class="fas fa-arrow-down"></i>
+                    تحميل المزيد
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Detail Modal -->
+    <div class="modal" id="detailModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-info-circle"></i> تفاصيل التحليل</h3>
+                <button class="modal-close" id="closeDetailModal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body" id="detailModalBody"></div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="closeDetail">إغلاق</button>
+                <button class="btn btn-primary" style="background: #dc2626;" id="deleteAnalysis">
+                    <i class="fas fa-trash"></i> حذف
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">
+        <i class="toast-icon"></i>
+        <span class="toast-message"></span>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+    
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/history.js"></script>
+</body>
+</html>

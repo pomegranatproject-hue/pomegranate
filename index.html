@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الحصاد الأحمر - Red Harvest</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon"><i class="fas fa-leaf"></i></div>
+                <div class="logo-text">
+                    <span class="logo-ar">الحصاد الأحمر</span>
+                    <span class="logo-en">Red Harvest</span>
+                </div>
+            </a>
+            
+            <div class="nav-links" id="navLinks">
+                <a href="index.html" class="nav-link active"><i class="fas fa-home"></i> الرئيسية</a>
+                <a href="analyze.html" class="nav-link"><i class="fas fa-microscope"></i> تحليل الصور</a>
+                <a href="dashboard.html" class="nav-link"><i class="fas fa-chart-line"></i> لوحة التحكم</a>
+                <a href="history.html" class="nav-link"><i class="fas fa-history"></i> السجل</a>
+            </div>
+            
+            <div class="nav-auth" id="navAuth">
+                <a href="login.html" class="btn btn-outline">تسجيل الدخول</a>
+                <a href="register.html" class="btn btn-primary">إنشاء حساب</a>
+            </div>
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn"><i class="fas fa-bars"></i></button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-bg">
+            <div class="hero-grid"></div>
+            <div id="heroParticles"></div>
+        </div>
+        
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge animate-fade-in">
+                    <i class="fas fa-brain"></i>
+                    <span>مدعوم بالذكاء الاصطناعي</span>
+                </div>
+                
+                <h1 class="hero-title animate-fade-in-up">
+                    نظام ذكي لتحليل<br>
+                    <span>مراحل نمو الرمان</span>
+                </h1>
+                
+                <p class="hero-desc animate-fade-in-up">
+                    اكتشف الوقت المثالي للحصاد باستخدام تقنيات الرؤية الحاسوبية ونموذج YOLO للكشف عن مراحل نمو ثمار الرمان بدقة عالية.
+                </p>
+                
+                <div class="hero-actions animate-fade-in-up">
+                    <a href="analyze.html" class="btn btn-hero">
+                        <i class="fas fa-camera"></i>
+                        ابدأ التحليل الآن
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <a href="#stages" class="btn btn-outline">
+                        <i class="fas fa-info-circle"></i>
+                        تعرف على المراحل
+                    </a>
+                </div>
+                
+                <div class="hero-stats animate-fade-in-up">
+                    <div class="stat-item">
+                        <div class="stat-icon"><i class="fas fa-percentage"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-value">95%+</span>
+                            <span class="stat-label">دقة الكشف</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon"><i class="fas fa-bolt"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-value"> 2 ثانية</span>
+                            <span class="stat-label">سرعة الكشف</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon"><i class="fas fa-layer-group"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-value">5</span>
+                            <span class="stat-label">مراحل نمو</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="scroll-indicator">
+                <div class="mouse"></div>
+                <span>اسحب للأسفل</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Growth Stages Section -->
+    <section class="stages-section" id="stages">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">مراحل النمو</span>
+                <h2 class="section-title">مراحل نمو الرمان الخمسة</h2>
+                <p class="section-subtitle">نظام الذكاء الاصطناعي يكتشف هذه المراحل بدقة عالية</p>
+            </div>
+            
+            <div class="stages-grid">
+                <div class="stage-card" data-stage="bud">
+                    <div class="stage-icon" style="--stage-color: #22c55e;">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <h3>البرعم</h3>
+                    <p class="stage-en">Bud</p>
+                    <p class="stage-desc">المرحلة الأولى من النمو</p>
+                </div>
+                
+                <div class="stage-card" data-stage="flower">
+                    <div class="stage-icon" style="--stage-color: #ec4899;">
+                        <i class="fas fa-spa"></i>
+                    </div>
+                    <h3>الزهرة</h3>
+                    <p class="stage-en">Flower</p>
+                    <p class="stage-desc">مرحلة الإزهار</p>
+                </div>
+                
+                <div class="stage-card" data-stage="early">
+                    <div class="stage-icon" style="--stage-color: #eab308;">
+                        <i class="fas fa-lemon"></i>
+                    </div>
+                    <h3>نمو مبكر</h3>
+                    <p class="stage-en">Early Growth</p>
+                    <p class="stage-desc">بداية تكون الثمار</p>
+                </div>
+                
+                <div class="stage-card" data-stage="mid">
+                    <div class="stage-icon" style="--stage-color: #f97316;">
+                        <i class="fas fa-apple-alt"></i>
+                    </div>
+                    <h3>نمو متوسط</h3>
+                    <p class="stage-en">Mid Growth</p>
+                    <p class="stage-desc">مرحلة النمو النشط</p>
+                </div>
+                
+                <div class="stage-card" data-stage="mature">
+                    <div class="stage-icon" style="--stage-color: #dc2626;">
+                        <i class="fas fa-circle"></i>
+                    </div>
+                    <h3>ناضج</h3>
+                    <p class="stage-en">Mature</p>
+                    <p class="stage-desc">جاهز للحصاد</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-content">
+                    <span class="section-badge">عن المشروع</span>
+                    <h2 class="section-title">الحصاد الأحمر</h2>
+                    <p class="about-text">
+                        مشروع بحثي أكاديمي يهدف إلى تطوير نظام ذكي لمساعدة المزارعين في تحديد 
+                        الوقت الأمثل لحصاد الرمان باستخدام تقنيات الرؤية الحاسوبية والتعلم العميق.
+                    </p>
+                    
+                    <div class="features-list">
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fas fa-brain"></i></div>
+                            <div>
+                                <h4>نموذج YOLO</h4>
+                                <p>تقنية كشف متقدمة للكائنات</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            <div>
+                                <h4>تحليل فوري</h4>
+                                <p>نتائج دقيقة في ثوانٍ</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fas fa-cloud"></i></div>
+                            <div>
+                                <h4>حفظ سحابي</h4>
+                                <p>تخزين آمن للبيانات</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <a href="analyze.html" class="btn btn-primary">
+                        <i class="fas fa-rocket"></i>
+                        جرب الآن
+                    </a>
+                </div>
+                
+                <div class="about-image">
+                    <img src="assets/images/pomegranate-stages.jpg" alt="مراحل نمو الرمان">
+                    <div class="image-overlay">
+                        <span>نموذج YOLO للكشف</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <div class="logo-icon"><i class="fas fa-leaf"></i></div>
+                        <span>الحصاد الأحمر</span>
+                    </div>
+                    <p>منصة زراعة ذكية لتحسين جودة الإنتاج</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>روابط سريعة</h4>
+                    <a href="index.html">الرئيسية</a>
+                    <a href="analyze.html">تحليل الصور</a>
+                    <a href="dashboard.html">لوحة التحكم</a>
+                    <a href="history.html">السجل</a>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>الحساب</h4>
+                    <a href="login.html">تسجيل الدخول</a>
+                    <a href="register.html">إنشاء حساب</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>© 2024 الحصاد الأحمر - مشروع بحثي أكاديمي</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">
+        <i class="toast-icon"></i>
+        <span class="toast-message"></span>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+    
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

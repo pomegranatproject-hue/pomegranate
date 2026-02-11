@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إنشاء حساب - الحصاد الأحمر</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+<body class="auth-page">
+    <div class="auth-container">
+        <div class="auth-bg">
+            <div class="auth-particles"></div>
+        </div>
+
+        <div class="auth-card animate-fade-in">
+            <div class="auth-logo">
+                <div class="logo-icon"><i class="fas fa-leaf"></i></div>
+            </div>
+
+            <h1>إنشاء حساب جديد</h1>
+            <p class="auth-subtitle">Create Account</p>
+
+            <form id="registerForm" class="auth-form">
+                <div class="form-group">
+                    <label for="name">
+                        <i class="fas fa-user"></i>
+                        الاسم الكامل
+                    </label>
+                    <input type="text" id="name" name="name" placeholder="أدخل اسمك" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">
+                        <i class="fas fa-envelope"></i>
+                        البريد الإلكتروني
+                    </label>
+                    <input type="email" id="email" name="email" placeholder="your@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">
+                        <i class="fas fa-lock"></i>
+                        كلمة المرور
+                    </label>
+                    <div class="password-input">
+                        <input type="password" id="password" name="password" placeholder="••••••••" required minlength="6">
+                        <button type="button" class="toggle-password" id="togglePassword">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="password-requirements">
+                        <div class="requirement" id="reqLength">
+                            <i class="fas fa-circle"></i>
+                            <span>6 أحرف على الأقل</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">
+                        <i class="fas fa-lock"></i>
+                        تأكيد كلمة المرور
+                    </label>
+                    <div class="password-input">
+                        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="••••••••" required>
+                        <button type="button" class="toggle-password" id="toggleConfirmPassword">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-hero btn-full" id="registerBtn">
+                    <i class="fas fa-user-plus"></i>
+                    إنشاء الحساب
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+
+                <div class="form-error" id="formError" style="display: none;">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span id="errorMessage"></span>
+                </div>
+            </form>
+
+            <div class="auth-divider"><span>أو</span></div>
+
+            <p class="auth-switch">
+                لديك حساب بالفعل؟
+                <a href="login.html">تسجيل الدخول</a>
+            </p>
+
+            <a href="index.html" class="back-home">
+                <i class="fas fa-arrow-right"></i>
+                العودة للرئيسية
+            </a>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">
+        <i class="toast-icon"></i>
+        <span class="toast-message"></span>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    
+    <script src="js/firebase-config.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+        const passwordInput = document.getElementById('password');
+        const reqLength = document.getElementById('reqLength');
+
+        passwordInput.addEventListener('input', function() {
+            const password = this.value;
+            if (password.length >= 6) {
+                reqLength.classList.add('valid');
+            } else {
+                reqLength.classList.remove('valid');
+            }
+        });
+
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const input = document.getElementById('password');
+            const icon = this.querySelector('i');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+
+        document.getElementById('toggleConfirmPassword').addEventListener('click', function() {
+            const input = document.getElementById('confirmPassword');
+            const icon = this.querySelector('i');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const registerBtn = document.getElementById('registerBtn');
+            const formError = document.getElementById('formError');
+            
+            if (password !== confirmPassword) {
+                document.getElementById('errorMessage').textContent = 'كلمات المرور غير متطابقة';
+                formError.style.display = 'flex';
+                return;
+            }
+            
+            if (password.length < 6) {
+                document.getElementById('errorMessage').textContent = 'كلمة المرور يجب أن تكون 6 أحرف على الأقل';
+                formError.style.display = 'flex';
+                return;
+            }
+            
+            registerBtn.disabled = true;
+            registerBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري إنشاء الحساب...';
+            formError.style.display = 'none';
+            
+            try {
+                const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+
+                try {
+                    await userCredential.user.updateProfile({ displayName: name });
+                } catch (e) {
+                    console.warn("updateProfile failed:", e);
+                }
+
+                showToast('success', 'تم إنشاء الحساب بنجاح!');
+
+                setTimeout(() => {
+                    window.location.href = 'analyze.html';
+                }, 1000);
+
+            } catch (error) {
+                let errorMessage = 'حدث خطأ أثناء إنشاء الحساب';
+                
+                switch (error.code) {
+                    case 'auth/email-already-in-use':
+                        errorMessage = 'البريد الإلكتروني مستخدم بالفعل';
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage = 'البريد الإلكتروني غير صالح';
+                        break;
+                    case 'auth/weak-password':
+                        errorMessage = 'كلمة المرور ضعيفة جداً';
+                        break;
+                }
+                
+                document.getElementById('errorMessage').textContent = errorMessage;
+                formError.style.display = 'flex';
+
+                registerBtn.disabled = false;
+                registerBtn.innerHTML = '<i class="fas fa-user-plus"></i> إنشاء الحساب <i class="fas fa-arrow-left"></i>';
+            }
+        });
+    </script>
+</body>
+</html>

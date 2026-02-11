@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحليل الصور - الحصاد الأحمر</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon"><i class="fas fa-leaf"></i></div>
+                <div class="logo-text">
+                    <span class="logo-ar">الحصاد الأحمر</span>
+                </div>
+            </a>
+            <div class="nav-links" id="navLinks">
+                <a href="index.html" class="nav-link"><i class="fas fa-home"></i> الرئيسية</a>
+                <a href="analyze.html" class="nav-link active"><i class="fas fa-microscope"></i> تحليل الصور</a>
+                <a href="dashboard.html" class="nav-link"><i class="fas fa-chart-line"></i> لوحة التحكم</a>
+                <a href="history.html" class="nav-link"><i class="fas fa-history"></i> السجل</a>
+            </div>
+            <div class="nav-auth" id="navAuth"></div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn"><i class="fas fa-bars"></i></button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="analyze-page">
+        <div class="container">
+            <div class="page-header">
+                <h1><i class="fas fa-microscope"></i> تحليل الصور بالذكاء الاصطناعي</h1>
+                <p>ارفع صورة الرمان للكشف عن مرحلة النمو</p>
+            </div>
+
+            <div class="analyze-grid">
+                <!-- Upload Section -->
+                <div class="upload-section">
+                    <div class="upload-card" id="uploadCard">
+                        <div class="upload-area" id="uploadArea">
+                            <input type="file" id="imageInput" accept="image/*" hidden>
+                            <div class="upload-placeholder" id="uploadPlaceholder">
+                                <div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                                <h3>اسحب الصورة هنا</h3>
+                                <p>أو انقر للاختيار</p>
+                                <span class="upload-formats">PNG, JPG, JPEG</span>
+                            </div>
+                            <div class="upload-preview" id="uploadPreview" style="display: none;">
+                                <img id="previewImage" src="" alt="معاينة">
+                                <button class="remove-image-btn" id="removeImage"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                        <div class="upload-actions">
+                            <button class="btn btn-secondary" id="cameraBtn"><i class="fas fa-camera"></i> التقاط</button>
+                            <button class="btn btn-hero" id="analyzeBtn" disabled>
+                                <i class="fas fa-brain"></i> تحليل الصورة
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Progress -->
+                    <div class="analysis-progress" id="analysisProgress" style="display: none;">
+                        <div class="progress-content">
+                            <div class="spinner"></div>
+                            <h3>جاري التحليل...</h3>
+                            <p>يتم معالجة الصورة بنموذج YOLO</p>
+                            <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Section -->
+                <div class="results-section" id="resultsSection" style="display: none;">
+                    <div class="results-card">
+                        <div class="results-header">
+                            <h2><i class="fas fa-check-circle"></i> نتائج التحليل</h2>
+                            <span class="results-time" id="resultsTime"></span>
+                        </div>
+
+                        <div class="detection-image-container">
+                            <canvas id="detectionCanvas"></canvas>
+                        </div>
+
+                        <div class="main-result" id="mainResult">
+                            <div class="stage-badge" id="stageBadge">
+                                <i class="fas fa-circle"></i>
+                                <span id="stageNameAr">ناضج</span>
+                            </div>
+                        </div>
+
+                        <div class="results-stats">
+                            <div class="stat-card">
+                                <div class="stat-icon"><i class="fas fa-bullseye"></i></div>
+                                <div class="stat-value" id="confidenceValue">0%</div>
+                                <div class="stat-label">الثقة</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon"><i class="fas fa-cubes"></i></div>
+                                <div class="stat-value" id="countValue">0</div>
+                                <div class="stat-label">العدد</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                                <div class="stat-value" id="timeValue">0s</div>
+                                <div class="stat-label">الوقت</div>
+                            </div>
+                        </div>
+
+                        <div class="detections-list" id="detectionsList">
+                            <h3><i class="fas fa-list"></i> تفاصيل الكشف</h3>
+                            <div class="detections-items" id="detectionsItems"></div>
+                        </div>
+
+                        <div class="results-actions">
+                            <button class="btn btn-secondary" id="newAnalysisBtn"><i class="fas fa-redo"></i> تحليل جديد</button>
+                            <button class="btn btn-primary" id="saveResultBtn"><i class="fas fa-save"></i> حفظ</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Camera Modal -->
+    <div class="modal" id="cameraModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-camera"></i> التقاط صورة</h3>
+                <button class="modal-close" id="closeCameraModal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <video id="cameraVideo" autoplay playsinline style="width:100%;border-radius:8px;"></video>
+                <canvas id="cameraCanvas" style="display: none;"></canvas>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelCamera">إلغاء</button>
+                <button class="btn btn-primary" id="capturePhoto"><i class="fas fa-camera"></i> التقاط</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">
+        <i class="toast-icon"></i>
+        <span class="toast-message"></span>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+    
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/analyzer.js"></script>
+</body>
+</html>
