@@ -320,11 +320,12 @@ ul {
 }
 
 .hero-title {
-    font-size: clamp(2.5rem, 6vw, 4rem);
-    font-weight: 800;
-    line-height: 1.2;
+    font-size: clamp(3rem, 7vw, 5rem);
+    font-weight: 900;
+    line-height: 1.1;
     margin-bottom: 1.5rem;
     color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
 }
 
 .hero-title span {
@@ -1105,8 +1106,9 @@ ul {
 
 .filter-group label {
     display: block;
-    font-size: 1rem;
-    color: var(--text-primary);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
     margin-bottom: 0.5rem;
 }
 
